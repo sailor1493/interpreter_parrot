@@ -20,11 +20,6 @@ func New(lex *lexer.Lexer) *Parser {
 	return ps
 }
 
-func (p *Parser) nextToken() {
-	p.curToken = p.peekToken
-	p.peekToken = p.lex.NextToken()
-}
-
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
@@ -72,6 +67,11 @@ func (p *Parser) parseLetStatement() ast.Statement {
 }
 
 // Utilities
+
+func (p *Parser) nextToken() {
+	p.curToken = p.peekToken
+	p.peekToken = p.lex.NextToken()
+}
 
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
