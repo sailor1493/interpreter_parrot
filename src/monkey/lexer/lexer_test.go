@@ -132,3 +132,20 @@ func TestKeywords(t *testing.T) {
 	lex := New(input)
 	evaulateTestcases(lex, tests, t)
 }
+
+func TestDoubleCharacterTokens(t *testing.T) {
+	input := `== != <= >= += -= *= /=`
+	tests := []TokenTestcase{
+		{token.EQ, "=="},
+		{token.NEQ, "!="},
+		{token.LE, "<="},
+		{token.GE, ">="},
+		{token.ADDASSIGN, "+="},
+		{token.MINUSASSIGN, "-="},
+		{token.MULASSIGN, "*="},
+		{token.DIVASSIGN, "/="},
+	}
+
+	lex := New(input)
+	evaulateTestcases(lex, tests, t)
+}
