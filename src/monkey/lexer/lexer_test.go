@@ -106,7 +106,8 @@ func TestKeywords(t *testing.T) {
 		return true;
 	} else {
 		return false;
-	}`
+	}
+	True False`
 
 	tests := []TokenTestcase{
 		{token.IF, "if"},
@@ -126,6 +127,8 @@ func TestKeywords(t *testing.T) {
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
+		{token.TRUE, "True"},
+		{token.FALSE, "False"},
 		{token.EOF, ""},
 	}
 
