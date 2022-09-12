@@ -24,8 +24,18 @@ const (
 	SLASH    = "/"
 
 	// Comparator
-	LT = "<"
-	GT = ">"
+	LT  = "<"
+	LE  = "<="
+	GT  = ">"
+	GE  = ">="
+	EQ  = "=="
+	NEQ = "!="
+
+	// Operate and Assign
+	ADDASSIGN   = "+="
+	MINUSASSIGN = "-="
+	MULASSIGN   = "*="
+	DIVASSIGN   = "/="
 
 	// Separator
 	COMMA     = ","
