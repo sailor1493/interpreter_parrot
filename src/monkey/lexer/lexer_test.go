@@ -22,25 +22,6 @@ func evaulateTestcases(lex *Lexer, tcs []TokenTestcase, t *testing.T) {
 	}
 }
 
-func TestNextTokenSpecialCharacters(t *testing.T) {
-	input := `=+(){},;`
-
-	tests := []TokenTestcase{
-		{token.ASSIGN, "="},
-		{token.PLUS, "+"},
-		{token.LPAREN, "("},
-		{token.RPAREN, ")"},
-		{token.LBRACE, "{"},
-		{token.RBRACE, "}"},
-		{token.COMMA, ","},
-		{token.SEMICOLON, ";"},
-		{token.EOF, ""},
-	}
-
-	l := New(input)
-	evaulateTestcases(l, tests, t)
-}
-
 func TestSingleCharacterTokens(t *testing.T) {
 	input := `=+(){},;-!/*<>`
 
@@ -117,4 +98,37 @@ func TestNextTokenRealworldCase1(t *testing.T) {
 
 	l := New(input)
 	evaulateTestcases(l, tests, t)
+}
+
+func TestKeywords(t *testing.T) {
+	input := `
+	if (5 < 10) {
+		return True;
+	} else {
+		return False;
+	}`
+
+	tests := []TokenTestcase{
+
+		{token.IF, "if"},
+		{token.LPAREN, "("},
+		{token.INT, "5"},
+		{token.LT, "<"},
+		{token.INT, "10"},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.RETURN, "return"},
+		{token.TRUE, "True"},
+		{token.SEMICOLON, ";"},
+		{token.RBRACE, "}"},
+		{token.ELSE, "else"},
+		{token.LBRACE, "{"},
+		{token.RETURN, "return"},
+		{token.FALSE, "False"},
+		{token.SEMICOLON, ";"},
+		{token.RBRACE, "}"},
+		{token.EOF, ""},
+	}
+	lex := New(input)
+	evaulateTestcases(lex, tests, t)
 }
