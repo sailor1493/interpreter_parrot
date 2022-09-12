@@ -12,6 +12,8 @@ type Parser struct {
 	peekToken token.Token
 }
 
+// Initializer
+
 func New(lex *lexer.Lexer) *Parser {
 	ps := &Parser{lex: lex}
 	ps.nextToken()
@@ -19,6 +21,8 @@ func New(lex *lexer.Lexer) *Parser {
 
 	return ps
 }
+
+// Program Parsing Entrypoint
 
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
