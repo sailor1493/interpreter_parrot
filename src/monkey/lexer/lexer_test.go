@@ -103,9 +103,9 @@ func TestNextTokenRealworldCase1(t *testing.T) {
 func TestKeywords(t *testing.T) {
 	input := `
 	if (5 < 10) {
-		return True;
+		return true;
 	} else {
-		return False;
+		return false;
 	}`
 
 	tests := []TokenTestcase{
@@ -118,13 +118,13 @@ func TestKeywords(t *testing.T) {
 		{token.RPAREN, ")"},
 		{token.LBRACE, "{"},
 		{token.RETURN, "return"},
-		{token.TRUE, "True"},
+		{token.TRUE, "true"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
 		{token.ELSE, "else"},
 		{token.LBRACE, "{"},
 		{token.RETURN, "return"},
-		{token.FALSE, "False"},
+		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
 		{token.EOF, ""},
