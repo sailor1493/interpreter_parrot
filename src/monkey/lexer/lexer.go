@@ -9,11 +9,15 @@ type Lexer struct {
 	ch           byte // Character currently evaluated
 }
 
+// Lexer initializer
+
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	l.readChar()
 	return l
 }
+
+// Token builder
 
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
@@ -79,11 +83,7 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func (l *Lexer) skipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
-		l.readChar()
-	}
-}
+// Token separator
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
@@ -101,6 +101,8 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
+// Chracter validity check methods
+
 func isLetter(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
 }
@@ -109,8 +111,18 @@ func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
+// Token generation methods
+
 func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
+}
+
+// Methods for reading input
+
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
+	}
 }
 
 func (l *Lexer) readChar() {
@@ -130,6 +142,8 @@ func (l *Lexer) peekChar() byte {
 		return l.input[l.readPosition]
 	}
 }
+
+// Methods for building double character tokens
 
 func (l *Lexer) peekCharAndMakeToken(crit byte, wt_type token.TokenType, wo_type token.TokenType) token.Token {
 	if l.peekChar() == crit {
