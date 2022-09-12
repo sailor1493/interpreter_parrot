@@ -109,7 +109,6 @@ func TestKeywords(t *testing.T) {
 	}`
 
 	tests := []TokenTestcase{
-
 		{token.IF, "if"},
 		{token.LPAREN, "("},
 		{token.INT, "5"},
@@ -129,6 +128,7 @@ func TestKeywords(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.EOF, ""},
 	}
+
 	lex := New(input)
 	evaulateTestcases(lex, tests, t)
 }
