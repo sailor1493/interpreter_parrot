@@ -23,23 +23,23 @@ func (l *Lexer) NextToken() token.Token {
 
 	// Operator
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.EQ, token.ASSIGN)
 	case '+':
-		tok = newToken(token.PLUS, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.ADDASSIGN, token.PLUS)
 	case '-':
-		tok = newToken(token.MINUS, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.MINUSASSIGN, token.MINUS)
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.NEQ, token.BANG)
 	case '/':
-		tok = newToken(token.SLASH, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.DIVASSIGN, token.SLASH)
 	case '*':
-		tok = newToken(token.ASTERISK, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.MULASSIGN, token.ASTERISK)
 
 		// Comparator
 	case '<':
-		tok = newToken(token.LT, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.LE, token.LT)
 	case '>':
-		tok = newToken(token.GT, l.ch)
+		tok = l.peekCharAndMakeToken('=', token.GE, token.GT)
 
 		// Separators
 	case ';':
@@ -129,4 +129,19 @@ func (l *Lexer) peekChar() byte {
 	} else {
 		return l.input[l.readPosition]
 	}
+}
+
+func (l *Lexer) peekCharAndMakeToken(crit byte, wt_type token.TokenType, wo_type token.TokenType) token.Token {
+	if l.peekChar() == crit {
+		literal := l.buildDoubleCharacterLiteral()
+		return token.Token{Type: wt_type, Literal: literal}
+	} else {
+		return newToken(wo_type, l.ch)
+	}
+}
+
+func (l *Lexer) buildDoubleCharacterLiteral() string {
+	ch := l.ch
+	l.readChar()
+	return string(ch) + string(l.ch)
 }
