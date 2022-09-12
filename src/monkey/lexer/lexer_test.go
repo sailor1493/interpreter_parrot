@@ -5,13 +5,15 @@ import (
 	"testing"
 )
 
+type TokenTestcase struct {
+	expectedType    token.TokenType
+	expectedLiteral string
+}
+
 func TestNextTokenSpecialCharacters(t *testing.T) {
 	input := `=+(){},;`
 
-	tests := []struct {
-		expectedType    token.TokenType
-		expectedLiteral string
-	}{
+	tests := []TokenTestcase{
 		{token.ASSIGN, "="},
 		{token.PLUS, "+"},
 		{token.LPAREN, "("},
@@ -36,7 +38,7 @@ func TestNextTokenSpecialCharacters(t *testing.T) {
 	}
 }
 
-func TestNextTokenRealworldCase1(t *testing.T){
+func TestNextTokenRealworldCase1(t *testing.T) {
 	input := `let five = 5;
 	let ten = 10;
 	let add = fn(x, y) {
@@ -44,11 +46,8 @@ func TestNextTokenRealworldCase1(t *testing.T){
 	};
 	let result = add(five, ten);
 	`
-	
-	tests := []struct {
-		expectedType token.TokenType
-		expectedLiteral string
-	}{
+
+	tests := []TokenTestcase{
 		{token.LET, "let"},
 		{token.IDENT, "five"},
 		{token.ASSIGN, "="},
