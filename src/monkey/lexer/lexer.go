@@ -101,7 +101,7 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
-// Chracter validity check methods
+// Character validity check methods
 
 func isLetter(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
