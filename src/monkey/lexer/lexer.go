@@ -39,19 +39,19 @@ func (l *Lexer) NextToken() token.Token {
 	case '*':
 		tok = l.peekCharAndMakeToken('=', token.MULASSIGN, token.ASTERISK)
 
-		// Comparator
+	// Comparator
 	case '<':
 		tok = l.peekCharAndMakeToken('=', token.LE, token.LT)
 	case '>':
 		tok = l.peekCharAndMakeToken('=', token.GE, token.GT)
 
-		// Separators
+	// Separators
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
 
-		// Parantheses
+	// Parantheses
 	case '(':
 		tok = newToken(token.LPAREN, l.ch)
 	case ')':
@@ -61,7 +61,7 @@ func (l *Lexer) NextToken() token.Token {
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
 
-		// Error check
+	// Error check
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
