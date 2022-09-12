@@ -41,6 +41,31 @@ func TestNextTokenSpecialCharacters(t *testing.T) {
 	evaulateTestcases(l, tests, t)
 }
 
+func TestSingleCharacterTokens(t *testing.T) {
+	input := `=+(){},;-!/*<>`
+
+	tests := []TokenTestcase{
+		{token.ASSIGN, "="},
+		{token.PLUS, "+"},
+		{token.LPAREN, "("},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.RBRACE, "}"},
+		{token.COMMA, ","},
+		{token.SEMICOLON, ";"},
+		{token.MINUS, "-"},
+		{token.BANG, "!"},
+		{token.SLASH, "/"},
+		{token.ASTERISK, "*"},
+		{token.LT, "<"},
+		{token.GT, ">"},
+		{token.EOF, ""},
+	}
+
+	l := New(input)
+	evaulateTestcases(l, tests, t)
+}
+
 func TestNextTokenRealworldCase1(t *testing.T) {
 	input := `let five = 5;
 	let ten = 10;
