@@ -12,17 +12,13 @@ func TestLetStatements(t *testing.T) {
 	let y = 10; let foobar = 2323232;
 	`
 
-	lex := lexer.New(input)
-	par := New(lex)
+	testProgram := makeProgram(t, input)
 
-	program := par.ParseProgram()
-	checkParserErrors(t, par)
-
-	if program == nil {
+	if testProgram == nil {
 		t.Fatal("ParseProgram() returned nil")
 	}
-	if len(program.Statements) != 3 {
-		t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(program.Statements))
+	if len(testProgram.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(testProgram.Statements))
 	}
 
 	tests := []struct {
@@ -34,7 +30,7 @@ func TestLetStatements(t *testing.T) {
 	}
 
 	for i, tt := range tests {
-		stmt := program.Statements[i]
+		stmt := testProgram.Statements[i]
 		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
@@ -48,16 +44,13 @@ func TestReturnStatements(t *testing.T) {
 	return add(15);
 	`
 
-	lex := lexer.New(input)
-	par := New(lex)
-	program := par.ParseProgram()
-	checkParserErrors(t, par)
+	testProgram := makeProgram(t, input)
 
-	if len(program.Statements) != 3 {
-		t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(program.Statements))
+	if len(testProgram.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d", len(testProgram.Statements))
 	}
 
-	for _, stmt := range program.Statements {
+	for _, stmt := range testProgram.Statements {
 		if !testReturnStatement(t, stmt) {
 			return
 		}
@@ -67,9 +60,7 @@ func TestReturnStatements(t *testing.T) {
 func TestIdentifierExpressions(t *testing.T) {
 	input := "foobar; barfoo"
 
-	testLexer := lexer.New(input)
-	testParser := New(testLexer)
-	testProgram := testParser.ParseProgram()
+	testProgram := makeProgram(t, input)
 
 	if len(testProgram.Statements) != 2 {
 		t.Fatalf("testProgram has not enough statements. got=%d", len(testProgram.Statements))
@@ -169,4 +160,12 @@ func checkParserErrors(t *testing.T, p *Parser) {
 		t.Errorf("parser error: %q", msg)
 	}
 	t.FailNow()
+}
+
+func makeProgram(t *testing.T, input string) *ast.Program {
+
+	testLexer := lexer.New(input)
+	testParser := New(testLexer)
+	checkParserErrors(t, testParser)
+	return testParser.ParseProgram()
 }
