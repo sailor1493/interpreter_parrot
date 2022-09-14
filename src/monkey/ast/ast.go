@@ -19,7 +19,7 @@ type Statement interface {
 
 type Expression interface {
 	Node
-	expresssionNode()
+	expressionNode()
 }
 
 // Statements Section
@@ -86,7 +86,7 @@ type Identifier struct {
 	Value string
 }
 
-func (i *Identifier) expresssionNode()     {}
+func (i *Identifier) expressionNode()      {}
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
 func (i *Identifier) String() string       { return i.Value }
 
