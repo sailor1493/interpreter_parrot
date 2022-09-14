@@ -73,10 +73,39 @@ func TestIdentifierExpressions(t *testing.T) {
 		{"barfoo", "barfoo"},
 	}
 	for i, stmt := range testProgram.Statements {
-		if !testIdentifierStatement(t, stmt, tests[i].expectedValue, tests[i].expectedLiteral) {
+		expStmt, ok := stmt.(*ast.ExpressionStatement)
+		if !ok {
+			t.Fatalf("stmt is not *ast.ExpressionStatement. got=%T", stmt)
+			return
+		}
+		if !testIdentifierExpression(t, &expStmt.Expression, tests[i].expectedValue, tests[i].expectedLiteral) {
 			return
 		}
 	}
+}
+
+func TestIntegerExpressions(t *testing.T) {
+	input := "5; 10;"
+	testProgram := makeProgram(t, input)
+
+	tests := []struct {
+		expectedValue   int64
+		expectedLiteral string
+	}{
+		{5, "5"},
+		{10, "10"},
+	}
+	for i, stmt := range testProgram.Statements {
+		expStmt, ok := stmt.(*ast.ExpressionStatement)
+		if !ok {
+			t.Fatalf("stmt is not *ast.ExpressionStatement. got=%T", stmt)
+			return
+		}
+		if !testIntegerExpression(t, &expStmt.Expression, tests[i].expectedValue, tests[i].expectedLiteral) {
+			return
+		}
+	}
+
 }
 
 // Statement Checking Internal Functions
@@ -116,15 +145,6 @@ func testReturnStatement(t *testing.T, stmt ast.Statement) bool {
 		return false
 	}
 	return true
-}
-
-func testIdentifierStatement(t *testing.T, stmt ast.Statement, expectedValue string, expectedLiteral string) bool {
-	expStmt, ok := stmt.(*ast.ExpressionStatement)
-	if !ok {
-		t.Fatalf("stmt is not *ast.ExpressionStatement. got=%T", stmt)
-		return false
-	}
-	return testIdentifierExpression(t, &expStmt.Expression, expectedValue, expectedLiteral)
 }
 
 // Expressions Checking Internal Functions
