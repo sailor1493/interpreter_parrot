@@ -64,6 +64,30 @@ func TestReturnStatements(t *testing.T) {
 	}
 }
 
+func TestIdentifierExpressions(t *testing.T) {
+	input := "foobar; barfoo"
+
+	testLexer := lexer.New(input)
+	testParser := New(testLexer)
+	testProgram := testParser.ParseProgram()
+
+	if len(testProgram.Statements) != 2 {
+		t.Fatalf("testProgram has not enough statements. got=%d", len(testProgram.Statements))
+	}
+	tests := []struct {
+		expectedValue   string
+		expectedLiteral string
+	}{
+		{"foobar", "foobar"},
+		{"barfoo", "barfoo"},
+	}
+	for i, stmt := range testProgram.Statements {
+		if !testIdentifierStatement(t, stmt, tests[i].expectedValue, tests[i].expectedLiteral) {
+			return
+		}
+	}
+}
+
 // Utilities
 
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
@@ -98,6 +122,28 @@ func testReturnStatement(t *testing.T, stmt ast.Statement) bool {
 	}
 	if stmt.TokenLiteral() != "return" {
 		t.Errorf("stmt.TokenLiteral not 'return', got=%q", returnStmt.TokenLiteral())
+		return false
+	}
+	return true
+}
+
+func testIdentifierStatement(t *testing.T, stmt ast.Statement, expectedValue string, expectedLiteral string) bool {
+	expStmt, ok := stmt.(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("stmt is not *ast.ExpressionStatement. got=%T", stmt)
+		return false
+	}
+	ident, ok := expStmt.Expression.(*ast.Identifier)
+	if !ok {
+		t.Fatalf("expression is not *ast.Identifier. got=%T", expStmt.Expression)
+		return false
+	}
+	if ident.Value != expectedValue {
+		t.Errorf("ident.Value not %s. got=%s", expectedValue, ident.Value)
+		return false
+	}
+	if ident.TokenLiteral() != expectedLiteral {
+		t.Errorf("ident.TokenLiteral not %s. got=%s", expectedLiteral, ident.TokenLiteral())
 		return false
 	}
 	return true
