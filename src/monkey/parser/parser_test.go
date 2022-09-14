@@ -88,7 +88,7 @@ func TestIdentifierExpressions(t *testing.T) {
 	}
 }
 
-// Utilities
+// Statement Checking Internal Functions
 
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	if s.TokenLiteral() != "let" {
@@ -133,9 +133,16 @@ func testIdentifierStatement(t *testing.T, stmt ast.Statement, expectedValue str
 		t.Fatalf("stmt is not *ast.ExpressionStatement. got=%T", stmt)
 		return false
 	}
-	ident, ok := expStmt.Expression.(*ast.Identifier)
+	return testIdentifierExpression(t, &expStmt.Expression, expectedValue, expectedLiteral)
+}
+
+// Expressions Checking Internal Functions
+
+func testIdentifierExpression(t *testing.T, expr_ptr *ast.Expression, expectedValue string, expectedLiteral string) bool {
+	expression := *expr_ptr
+	ident, ok := expression.(*ast.Identifier)
 	if !ok {
-		t.Fatalf("expression is not *ast.Identifier. got=%T", expStmt.Expression)
+		t.Fatalf("expression is not *ast.Identifier. got=%T", expression)
 		return false
 	}
 	if ident.Value != expectedValue {
@@ -148,6 +155,8 @@ func testIdentifierStatement(t *testing.T, stmt ast.Statement, expectedValue str
 	}
 	return true
 }
+
+// Error Checking Internal Functions
 
 func checkParserErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
