@@ -147,6 +147,24 @@ func testIdentifierExpression(t *testing.T, expr_ptr *ast.Expression, expectedVa
 	return true
 }
 
+func testIntegerExpression(t *testing.T, expr_ptr *ast.Expression, expectedValue int64, expectedLiteral string) bool {
+	expression := *expr_ptr
+	integer_expression, ok := expression.(*ast.IntegerLiteral)
+	if !ok {
+		t.Fatalf("expression is not *ast.Identifier. got=%T", expression)
+		return false
+	}
+	if integer_expression.Value != expectedValue {
+		t.Errorf("ident.Value not %d. got=%d", expectedValue, integer_expression.Value)
+		return false
+	}
+	if integer_expression.TokenLiteral() != expectedLiteral {
+		t.Errorf("ident.TokenLiteral not %s. got=%s", expectedLiteral, integer_expression.TokenLiteral())
+		return false
+	}
+	return true
+}
+
 // Error Checking Internal Functions
 
 func checkParserErrors(t *testing.T, p *Parser) {
